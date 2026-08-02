@@ -1,13 +1,14 @@
 # Databricks Sales Pipeline
 
-Projeto de engenharia de dados utilizando Databricks, Apache Spark e Delta Lake.
+🌎 **Language:** English | [Português](README-PT.md)
 
-O objetivo é construir um pipeline completo de vendas seguindo a arquitetura Medallion:
+End-to-end Data Engineering project built using Databricks, Apache Spark, and Delta Lake.
 
-- Bronze: ingestão dos dados brutos, validação inicial e quarentena
-- Silver: tratamento, padronização e enriquecimento dos dados
-- Gold: modelo dimensional para análise
+The objective is to design a complete sales data pipeline following the Medallion Architecture pattern:
 
+- Bronze: raw data ingestion, initial validation, and quarantine handling
+- Silver: data cleansing, standardization, enrichment, and optimization
+- Gold: dimensional model designed for analytics consumption
 
 ## Arquitetura
 
@@ -32,7 +33,7 @@ Gold Layer
 Analytics
 
 
-## Tecnologias
+## Technologies
 
 - Databricks
 - Apache Spark
@@ -45,120 +46,131 @@ Analytics
 
 ## Dataset
 
-O projeto utiliza uma base simulada de vendas contendo:
+The project uses a simulated sales dataset containing:
 
-- vendas
-- produtos
-- lojas
-- clientes
-
-
-## Implementações
-
-### Bronze
-
-Características:
-
-- Streaming ingestion utilizando Databricks Auto Loader
-- Processamento incremental
-- Controle de checkpoint
-- Armazenamento em Delta Tables
-- Tratamento de dados inválidos através de camada de quarentena
+- Sales transactions
+- Products
+- Stores
+- Customers
 
 
-### Data Quality e Quarantine Pattern
-
-A camada Bronze possui dois tipos de validação:
+## Implementations
 
 
-#### Quarentena Técnica
+## Bronze Layer
 
-Responsável por capturar problemas relacionados à estrutura dos dados.
+Features:
 
-Exemplos:
-
-- Alterações inesperadas de schema
-- Campos não reconhecidos
-- Dados capturados no campo `_rescued_data`
-
-
-#### Quarentena de Negócio
-
-Responsável por capturar registros que possuem estrutura válida, porém violam regras do domínio.
-
-Exemplos:
-
-- Produto inexistente
-- Loja inválida
-- Cliente inexistente
-- Valores negativos
-- Campos obrigatórios vazios
+- Streaming ingestion using Databricks Auto Loader
+- Incremental data processing
+- Checkpoint management
+- Delta Table storage
+- Invalid data handling through quarantine layers
 
 
-Os registros inconsistentes são isolados sem interromper o pipeline, permitindo rastreabilidade e posterior análise.
+## Data Quality and Quarantine Pattern
+
+The Bronze layer implements two types of validations:
 
 
-### Silver
+### Technical Quarantine
 
-Implementações:
+Responsible for capturing structural data issues.
 
-- Tratamento de tipos
-- Padronização dos dados
-- Deduplicação
-- Aplicação de regras de negócio
-- Enriquecimento dos dados
-- Otimização utilizando comando `OPTIMIZE`
+Examples:
 
-#### Performance
-
-As tabelas da camada Silver são periodicamente otimizadas utilizando o comando `OPTIMIZE`, reduzindo a quantidade de arquivos pequenos e melhorando a performance de leitura para as camadas analíticas.
+- Unexpected schema changes
+- Unknown fields
+- Data captured in the `_rescued_data` column
 
 
-### Gold
+### Business Quarantine
 
-Modelo dimensional:
+Responsible for capturing records that have a valid structure but violate business rules.
 
-Dimensões:
+Examples:
 
-- dim_produto
-- dim_loja
-- dim_cliente
-- dim_status_venda
+- Non-existing products
+- Invalid stores
+- Non-existing customers
+- Negative values
+- Missing mandatory fields
 
-Fato:
 
-- fato_venda
+Invalid records are isolated without stopping pipeline execution, ensuring data traceability and allowing further analysis.
 
-#### Estratégia de Consumo
 
-A camada Gold foi implementada utilizando Materialized Views, permitindo:
+## Silver Layer
 
-- Atualização incremental dos dados
-- Redução do custo computacional das consultas
-- Melhor desempenho para análises e dashboards
-- Processamento apenas das alterações identificadas nas camadas inferiores
+Implemented features:
 
-As Materialized Views são atualizadas automaticamente conforme novos dados são disponibilizados nas camadas Bronze e Silver.
+- Data type standardization
+- Data cleansing
+- Deduplication
+- Business rule application
+- Data enrichment
+- Delta optimization using `OPTIMIZE`
+
+
+### Performance Optimization
+
+Silver tables are periodically optimized using the Delta Lake `OPTIMIZE` command.
+
+This process reduces small files and improves read performance for downstream analytical workloads.
+
+
+## Gold Layer
+
+Dimensional model implemented:
+
+
+### Dimensions
+
+- dim_product
+- dim_store
+- dim_customer
+- dim_sales_status
+
+
+### Fact
+
+- fact_sales
+
+
+## Consumption Strategy
+
+The Gold layer was implemented using Materialized Views, providing:
+
+- Incremental data refresh
+- Reduced computational cost for analytical queries
+- Improved performance for dashboards and reporting
+- Processing only changed data from lower layers
+
+
+Materialized Views are automatically refreshed as new data becomes available in the Bronze and Silver layers.
+
 
 ## Data Quality
 
-Foram implementadas validações:
+Implemented validation rules:
 
-| Regra | Ação |
+
+| Rule | Action |
 |-|-|
-| Valor negativo | Quarentena |
-| Campo obrigatório vazio | Quarentena |
-| Fora de estrutura recuperados pelo campo `_rescued_data` | Quarentena |
+| Negative values | Quarantine |
+| Missing mandatory fields | Quarantine |
+| Unexpected schema fields captured by `_rescued_data` | Quarantine |
 
 
-## Como executar
+## How to Run
 
-1. Importar notebooks no Databricks
-2. Importar os arquivos de dados
-3. Configurar catálogo e schema no Unity Catalog
-4. Executar pipeline
+1. Import notebooks into Databricks
+2. Upload the dataset files
+3. Configure Catalog and Schema using Unity Catalog
+4. Execute the pipeline
 
-## Principais conceitos aplicados
+
+## Key Concepts Applied
 
 - Medallion Architecture
 - Delta Lake
@@ -166,7 +178,7 @@ Foram implementadas validações:
 - Data Quality Framework
 - Quarantine Pattern
 - Dimensional Modeling
-- OPTIMIZE nas tabelas Silver
+- Delta Lake Optimization with OPTIMIZE
 - Materialized Views
 
 
