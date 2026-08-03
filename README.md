@@ -7,6 +7,10 @@ This project documentation is available in the following languages:
 - 🇺🇸 English (current)
 - 🇧🇷 [Português](README-PT.md)
 
+---
+
+# Overview
+
 End-to-end Data Engineering project built using Databricks, Apache Spark, and Delta Lake.
 
 The objective is to design a complete sales data pipeline following the Medallion Architecture pattern:
