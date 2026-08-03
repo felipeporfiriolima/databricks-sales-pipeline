@@ -1,6 +1,13 @@
 # Databricks Sales Pipeline
 
-🌎 **Idioma:** Português | [English](README.md)  
+## Documentação
+
+A documentação deste projeto está disponível nos seguintes idiomas:
+
+- 🇧🇷 Português (atual)
+- 🇺🇸 [English](README.md)
+
+## Visão Geral 
 
 Projeto de engenharia de dados utilizando Databricks, Apache Spark e Delta Lake.
 
